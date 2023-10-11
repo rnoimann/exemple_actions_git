@@ -8,7 +8,7 @@ inputs:
     description: Trello API key, visit https://trello.com/app-key for key
     required: true
   trello-auth-token:
-    description: Trello auth token, visit https://trello.com/app-key then click generate a token
+    description: Trello auth token, visit https://trello.com/app-key then click right side in text - you can manually generate a "Token"
     required: true
   trello-board-id:
     description: Trello board ID, visit a board then append .json to url to find id
@@ -16,19 +16,15 @@ inputs:
   trello-card-action:
     description: Trello card action, either "Comment" or "Attachment"
     required: true
-  trello-list-name-commit:
-    description: Trello list name for new commit, for example "Doing", "In Progress", etc
-    required: true
   trello-list-name-pr-open:
     description: Trello list name for open pull request, for example "Reviewing", "In Review", etc
     required: false
   trello-list-name-pr-closed:
     description: Trello list name for closed pull request, for example "Testing", "Done", etc
     required: false
-  trello-card-id-pattern:
-    description: Custom pattern to extract Trello card ID
-    default: "#"
+  trello-debug-mode:
+    description: Do console log, inside gitActions to help to debug errors, for example true,false
     required: false
 runs:
   using: node16
-  main: "src/append_trello_card.js"
+  main: src/append_trello_card.js
