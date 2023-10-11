@@ -1,0 +1,34 @@
+name: Trello Card
+description: GitHub Action to attach GitHub pull requests to a Trello card
+branding:
+  icon: "check-square"
+  color: "gray-dark"
+inputs:
+  trello-api-key:
+    description: Trello API key, visit https://trello.com/app-key for key
+    required: true
+  trello-auth-token:
+    description: Trello auth token, visit https://trello.com/app-key then click generate a token
+    required: true
+  trello-board-id:
+    description: Trello board ID, visit a board then append .json to url to find id
+    required: true
+  trello-card-action:
+    description: Trello card action, either "Comment" or "Attachment"
+    required: true
+  trello-list-name-commit:
+    description: Trello list name for new commit, for example "Doing", "In Progress", etc
+    required: true
+  trello-list-name-pr-open:
+    description: Trello list name for open pull request, for example "Reviewing", "In Review", etc
+    required: false
+  trello-list-name-pr-closed:
+    description: Trello list name for closed pull request, for example "Testing", "Done", etc
+    required: false
+  trello-card-id-pattern:
+    description: Custom pattern to extract Trello card ID
+    default: "#"
+    required: false
+runs:
+  using: node16
+  main: "src/append_trello_card.js"
