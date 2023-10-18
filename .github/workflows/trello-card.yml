@@ -1,6 +1,8 @@
 name: GitHub To Trello Cards
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, closed]
 
 jobs:
   trello_card:
