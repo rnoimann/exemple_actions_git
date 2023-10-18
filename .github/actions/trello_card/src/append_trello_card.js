@@ -151,7 +151,7 @@ async function handlePullRequest(data) {
   let url = data.html_url || data.url;
   let message_title = data.title;
   let user = data.user.name;
-  //let branch = data.head.ref;
+  // let branch = data.head.ref;
   let cardsNumbers = await getAllCardNumbers(message_title);
 
   cardsNumbers.forEach(async cardNumber => {
