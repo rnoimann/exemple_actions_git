@@ -3,14 +3,12 @@ name: GitHub To Trello Cards
 on: [pull_request]
 
 jobs:
-  build:
+  trello_card:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-          ref: "${{ secrets.GITHUB_SHA }}"
+
       - name: Install Dependencies
         run: cd ./.github/actions/trello_card && npm ci
       - uses: ./.github/actions/trello_card
@@ -20,7 +18,6 @@ jobs:
           trello-auth-token: ${{ secrets.TRELLO_TOKEN }}
           trello-board-id: "6526e7251771fcc381a15e7b"
           trello-card-action: "Attachment"
-          trello-list-name-commit: "Doing"
           trello-list-name-pr-open: "Review"
           trello-list-name-pr-closed: "Done"
-          trello-card-id-pattern: "/\[t[:-](\w+)]/"
+          trello-debug-mode: "true"
