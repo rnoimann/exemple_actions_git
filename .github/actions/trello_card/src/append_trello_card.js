@@ -30,6 +30,7 @@ function getCardId(cardsFromBoard, cardHash){
 
 async function getCardIdFromBoard(trelloBoardId, cardHash){
   log(`getCardIdFromBoard(${trelloBoardId}, ${cardHash})`);
+
   if (trelloBoardId && cardHash) {
     let url = `https://trello.com/1/boards/${trelloBoardId}/cards`;
     return await axios.get(url, { 
@@ -62,6 +63,7 @@ async function getAllCardNumbers(message_title) {
 
 async function getCardOnBoard(board, card) {
   log(`getCardOnBoard(${board}, ${card})`);
+
   if (card && card.length > 0) {
     let url = `https://trello.com/1/boards/${board}/cards/${card}`;
     return await axios.get(url, { 
@@ -82,6 +84,7 @@ async function getCardOnBoard(board, card) {
 
 async function getListOnBoard(board, list) {
   log(`getListOnBoard(${board}, ${list})`);
+
   let url = `https://trello.com/1/boards/${board}/lists`
   return await axios.get(url, { 
     params: { 
@@ -97,8 +100,31 @@ async function getListOnBoard(board, list) {
   });
 }
 
+async function checkIsAlreadyAttached(card, link){
+  let url = `https://api.trello.com/1/cards/${card}/attachments`;
+  return await axios.get(url, { 
+    params: { 
+      key: trelloApiKey, 
+      token: trelloAuthToken 
+    }
+  }).then(response => {
+    let result = response.data.find(attaches => attaches.url === link);
+    return result ? true : false;
+  }).catch(error => {
+    console.error(url, `Error ${error.response.status} ${error.response.statusText}`);
+    return null;
+  });
+}
+
 async function addAttachmentToCard(card, link) {
   log(`addAttachmentToCard(${card}, ${link})`);
+
+  const already_attached = await checkIsAlreadyAttached(card, link);
+  if (already_attached){
+    log(`already_attached is (${already_attached})`);
+    return true;
+  }
+
   let url = `https://api.trello.com/1/cards/${card}/attachments`;
   return await axios.post(url, {
     key: trelloApiKey,
@@ -114,6 +140,7 @@ async function addAttachmentToCard(card, link) {
 
 async function addCommentToCard(card, user, message, link) {
   log(`addCommentToCard(${card}, ${user}, ${message}, ${link})`);
+
   let url = `https://api.trello.com/1/cards/${card}/actions/comments`;
   return await axios.post(url, {
     key: trelloApiKey,
@@ -129,6 +156,7 @@ async function addCommentToCard(card, user, message, link) {
 
 async function moveCardToList(board, card, list) {
   log(`moveCardToList(${board}, ${card}, ${list})`);
+
   let listId = await getListOnBoard(board, list);
   if (listId && listId.length > 0) {
     let url = `https://api.trello.com/1/cards/${card}`;
@@ -148,6 +176,7 @@ async function moveCardToList(board, card, list) {
 
 async function handlePullRequest(data) {
   log(`handlePullRequest(${JSON.stringify(data)}`);
+
   let url = data.html_url || data.url;
   let message_title = data.title;
   let user = data.user.name;
