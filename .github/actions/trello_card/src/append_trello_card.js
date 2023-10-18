@@ -147,7 +147,7 @@ async function moveCardToList(board, card, list) {
 }
 
 async function handlePullRequest(data) {
-  // log(`handlePullRequest`, data);
+  log(`handlePullRequest(${JSON.stringify(data)}`);
   let url = data.html_url || data.url;
   let message_title = data.title;
   let user = data.user.name;
@@ -174,9 +174,9 @@ async function handlePullRequest(data) {
   });
 }
 
-function log(text, args){
+function log(text){
   if (trelloDebugMode.toLowerCase() === 'true')
-      console.log(text, args);
+      console.log(text);
 }
 
 async function run() {
